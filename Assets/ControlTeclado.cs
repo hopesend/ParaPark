@@ -10,6 +10,7 @@ public class ControlTeclado : MonoBehaviour
 	public GameObject modelo;
 	public GameObject camara;
 
+	private Renderer modeloRenderer;
 	private estado estadoAplicacion;
 	public estado EstadoAplicacion
 	{
@@ -33,6 +34,8 @@ public class ControlTeclado : MonoBehaviour
 	void Awake()
 	{
 		EstadoAplicacion = estado.enReloj;
+		modeloRenderer = modelo.GetComponentInChildren<Renderer> ();
+		modeloRenderer.material.color = new Color (modeloRenderer.material.color.r, modeloRenderer.material.color.g, modeloRenderer.material.color.b, 0);
 		//modelo.SetActive (false);
 	}
 
@@ -93,16 +96,16 @@ public class ControlTeclado : MonoBehaviour
 
 	private void MostrarModelo()
 	{
-		StartCoroutine(Mover3D(modelo.transform, modelo.transform.position, new Vector3(3,3,3), 0.2f));
-		StartCoroutine(Mover3D(camara.transform, new Vector3(camara.transform.position.y, camara.transform.position.y, -1.1f), camara.transform.localScale, 0.2f));
-		StartCoroutine(Mover3D(luz.transform, new Vector3(luz.transform.position.y, luz.transform.position.y, -11f), luz.transform.localScale, 0.2f));
+		//StartCoroutine(Mover3D(modelo.transform, modelo.transform.position, 0.2f));
+		//StartCoroutine(Mover3D(camara.transform, new Vector3(camara.transform.position.y, camara.transform.position.y, -1.1f), 0.2f));
+		//StartCoroutine(Mover3D(luz.transform, new Vector3(luz.transform.position.y, luz.transform.position.y, -11f), 0.2f));
 	}
 
 	private void OcultarModelo()
 	{
-		StartCoroutine(Mover3D(modelo.transform, modelo.transform.position, new Vector3(0,0,0), 0.2f));
-		StartCoroutine(Mover3D(camara.transform, new Vector3(camara.transform.position.y, camara.transform.position.y, -30.7f), camara.transform.localScale, 0.2f));
-		StartCoroutine(Mover3D(luz.transform, new Vector3(luz.transform.position.y, luz.transform.position.y, -2.5f), luz.transform.localScale, 0.2f));
+		//StartCoroutine(Mover3D(modelo.transform, modelo.transform.position, 0.2f));
+		//StartCoroutine(Mover3D(camara.transform, new Vector3(camara.transform.position.y, camara.transform.position.y, -30.7f), 0.2f));
+		//StartCoroutine(Mover3D(luz.transform, new Vector3(luz.transform.position.y, luz.transform.position.y, -2.5f), 0.2f));
 	}
 
 	private void MostrarReloj()
@@ -131,16 +134,38 @@ public class ControlTeclado : MonoBehaviour
 		}
 	}
 
-	public IEnumerator Mover3D(Transform objeto, Vector3 destinoPosicion, Vector3 destinoEscala, float suavizado)
+	public IEnumerator Mover3D(Transform objeto, Vector3 destinoPosicion, float suavizado)
 	{
 		while (true) {
 			float tiempo = 0f;
 			tiempo += Time.deltaTime;
 			objeto.position = Vector3.Lerp (objeto.position, destinoPosicion, (tiempo / suavizado));
-			objeto.localScale = Vector3.Lerp (objeto.localScale, destinoEscala, (tiempo / suavizado));
 
 			if (objeto.position.ToString ().Equals (destinoPosicion.ToString ())) 
 				yield break;
+
+			yield return null;
+		}
+	}
+
+	public IEnumerator CambiarTransparencia(Renderer modelRenderer, bool effect,  float suavizado)
+	{
+		//effect true mostras objecto, false ocultar modelo
+		while (true) 
+		{
+			float tiempo = 0f;
+			tiempo += Time.deltaTime;
+			if(effect)
+				modelRenderer.material.color = Color.Lerp(modelRenderer.material.color, new Color(modelRenderer.material.color.r, modelRenderer.material.color.g, modelRenderer.material.color.b, 1), (tiempo / suavizado));
+			else
+				modelRenderer.material.color = Color.Lerp(modelRenderer.material.color, new Color(modelRenderer.material.color.r, modelRenderer.material.color.g, modelRenderer.material.color.b, 0), (tiempo / suavizado));
+
+			if(effect)
+				if (modelRenderer.material.color.a.Equals (1))
+					yield break;
+			else
+				if (modelRenderer.material.color.a.Equals (0))
+					yield break;
 
 			yield return null;
 		}
