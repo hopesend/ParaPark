@@ -6,7 +6,7 @@ public class ControlTeclado : MonoBehaviour
 {
 	public ControlTiempo Reloj;
 	public GameObject relojGrande;
-	public GameObject luz;
+	public Light luz;
 	public GameObject modelo;
 	public GameObject camara;
 
@@ -33,10 +33,10 @@ public class ControlTeclado : MonoBehaviour
 
 	void Awake()
 	{
+		luz = GameObject.Find ("Spotlight").GetComponent<Light> ();
+		luz.intensity = 0f;
+		modelo.SetActive (false);
 		EstadoAplicacion = estado.enReloj;
-		modeloRenderer = modelo.GetComponentInChildren<Renderer> ();
-		modeloRenderer.material.color = new Color (modeloRenderer.material.color.r, modeloRenderer.material.color.g, modeloRenderer.material.color.b, 0);
-		//modelo.SetActive (false);
 	}
 
 	void Update () 
@@ -96,6 +96,8 @@ public class ControlTeclado : MonoBehaviour
 
 	private void MostrarModelo()
 	{
+		modelo.SetActive (true);
+		StartCoroutine(IntensidadLuz(luz, 4f, 0.4f));
 		//StartCoroutine(Mover3D(modelo.transform, modelo.transform.position, 0.2f));
 		//StartCoroutine(Mover3D(camara.transform, new Vector3(camara.transform.position.y, camara.transform.position.y, -1.1f), 0.2f));
 		//StartCoroutine(Mover3D(luz.transform, new Vector3(luz.transform.position.y, luz.transform.position.y, -11f), 0.2f));
@@ -103,6 +105,8 @@ public class ControlTeclado : MonoBehaviour
 
 	private void OcultarModelo()
 	{
+		StartCoroutine(IntensidadLuz(luz, 0, 0.4f));
+		modelo.SetActive (false);
 		//StartCoroutine(Mover3D(modelo.transform, modelo.transform.position, 0.2f));
 		//StartCoroutine(Mover3D(camara.transform, new Vector3(camara.transform.position.y, camara.transform.position.y, -30.7f), 0.2f));
 		//StartCoroutine(Mover3D(luz.transform, new Vector3(luz.transform.position.y, luz.transform.position.y, -2.5f), 0.2f));
@@ -166,6 +170,21 @@ public class ControlTeclado : MonoBehaviour
 			else
 				if (modelRenderer.material.color.a.Equals (0))
 					yield break;
+
+			yield return null;
+		}
+	}
+
+	public IEnumerator IntensidadLuz(Light foco, float intensidad, float suavizado)
+	{
+		while (true) 
+		{
+			float tiempo = 0f;
+			tiempo += Time.deltaTime;
+			foco.intensity = Mathf.Lerp (foco.intensity, intensidad, suavizado);
+
+			if (foco.intensity.Equals(intensidad)) 
+				yield break;
 
 			yield return null;
 		}

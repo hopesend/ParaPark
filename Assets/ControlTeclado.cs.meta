@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 658f158715aba8345b55f55124febc4d
-timeCreated: 1471840838
+timeCreated: 1472445175
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
@@ -9,7 +9,7 @@ MonoImporter:
   - relojGrande: {instanceID: 0}
   - luz: {instanceID: 0}
   - modelo: {fileID: 100000, guid: b84ffe10102008c4f8abf61f70aba4bb, type: 3}
-  - camara: {instanceID: 0}
+  - camara: {fileID: 1000012847758628, guid: 5daef9289e25e0c48b5c5634ba72e447, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
