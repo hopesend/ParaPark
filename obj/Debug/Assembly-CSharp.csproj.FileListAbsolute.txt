@@ -19,3 +19,5 @@ D:\Programacion\SVN\Parapark\Parapark\Temp\bin\Debug\UnityEngine.Networking.xml
 D:\Programacion\SVN\Parapark\Parapark\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 D:\Programacion\SVN\Parapark\Parapark\obj\Debug\Assembly-CSharp.dll
 D:\Programacion\SVN\Parapark\Parapark\obj\Debug\Assembly-CSharp.pdb
+D:\Programacion\SVN\Parapark\ParaPark\Temp\bin\Debug\SALSA.dll
+D:\Programacion\SVN\Parapark\ParaPark\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb

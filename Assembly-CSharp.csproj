@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Audio.cs" />
+     <Compile Include="Assets\CM_MicInput.cs" />
      <Compile Include="Assets\ControlTeclado.cs" />
      <Compile Include="Assets\ControlTiempo.cs" />
      <Compile Include="Assets\Crazy Minnow Studio\SALSA with RandomEyes\Examples\Scripts\CSharp\CM_DialogSystem.cs" />
