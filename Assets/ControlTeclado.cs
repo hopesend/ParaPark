@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using Parapark.Enumeraciones;
 
@@ -22,76 +23,152 @@ public class ControlTeclado : MonoBehaviour
 			{
 				MostrarReloj ();
 				OcultarModelo ();
+				return;
 			} 
-			else 
+
+			if	(estadoAplicacion.Equals (estado.enModelo)) 
 			{
 				OcultarReloj ();
 				MostrarModelo ();
+				return;
+			}
+
+			if(estadoAplicacion.Equals(estado.enReproduccionVideo))
+			{
+				OcultarReloj ();
+				OcultarModelo ();
+				return;
 			}
 		}
 	}
 
 	void Awake()
 	{
-		luz = GameObject.Find ("Spotlight").GetComponent<Light> ();
 		luz.intensity = 0f;
 		modelo.SetActive (false);
-		EstadoAplicacion = estado.enReloj;
+		EstadoAplicacion = estado.enConfiguracion;
 	}
 
 	void Update () 
 	{
 		if (Input.anyKey) 
 		{
-			if (Input.GetKeyDown (KeyCode.Tab)) 
+			switch (estadoAplicacion) 
 			{
-				EstadoAplicacion = EstadoAplicacion.Equals (estado.enReloj) ? estado.enModelo : estado.enReloj;
-				return;
-			}
+				case estado.enConfiguracion:
+					{
+						TecladoEnReloj ();
+						if (Input.GetKeyDown (KeyCode.Space)) 
+						{
+							if (Reloj.tiempo > 0) 
+							{
+								Reloj.pausa = false;
+								EstadoAplicacion = estado.enReloj;
+							}
+						}
+						break;
+					}
 
-			if(estadoAplicacion.Equals(estado.enReloj))
-				TecladoEnReloj();
-			else
-				TecladoEnModelo();
+				case estado.enModelo:
+					{
+						TecladoEnModelo ();
+						if (Input.GetKeyDown (KeyCode.Tab)) 
+							EstadoAplicacion = estado.enReloj;
+						break;
+					}
+
+				case estado.enReloj:
+					{
+						
+						if (Input.GetKeyDown (KeyCode.Tab)) 
+							EstadoAplicacion = estado.enModelo;
+						break;
+					}
+			}
 		}
 	}
 
 	private void TecladoEnReloj()
 	{
-		// (Barra Espaciadora) Comienzo y pausa 
-		if (Input.GetKeyDown (KeyCode.Space)) 
-		{
-			Reloj.pausa = !Reloj.pausa;
-			return;
-		}
-
 		// (Intro) Reinicio de contador
 		if (Input.GetKeyDown (KeyCode.Return)) 
-		{
 			Reloj.tiempo = 0;
-			Reloj.MostrarTiempo ();
-			return;
-		}
 
-		// (F5) aumenta de 5 en 5 el tiempo
-		if (Input.GetKeyDown (KeyCode.F5)) 
-		{
-			Reloj.tiempo += 300;
-			Reloj.MostrarTiempo ();
-			return;
-		}
+		// (F1) aumenta 60 minutos el tiempo
+		if (Input.GetKeyDown (KeyCode.F1)) 
+			Reloj.tiempo += 3600;
 
-		// (F10) aumenta de 10 en 10 el tiempo
-		if (Input.GetKeyDown (KeyCode.F10)) 
-		{
-			Reloj.tiempo += 600;
-			Reloj.MostrarTiempo ();
-			return;
-		}
+		// (F2) aumenta 1 mintuo el tiempo
+		if (Input.GetKeyDown (KeyCode.F2)) 
+			Reloj.tiempo += 60;
+
+		Reloj.MostrarTiempo ();
 	}
 
 	private void TecladoEnModelo()
 	{
+		// (F3) Video 1
+		if (Input.GetKeyDown (KeyCode.F3)) 
+		{
+			ReproducirVideo (1);
+			return;
+		}
+
+		// (F4) Video 2
+		if (Input.GetKeyDown (KeyCode.F4)) 
+		{
+			ReproducirVideo (2);
+			return;
+		}
+
+		// (F5) Video 3
+		if (Input.GetKeyDown (KeyCode.F5)) 
+		{
+			ReproducirVideo (3);
+			return;
+		}
+
+		// (F6) Video 4
+		if (Input.GetKeyDown (KeyCode.F6)) 
+		{
+			ReproducirVideo (4);
+			return;
+		}
+
+		// (F7) Video 5
+		if (Input.GetKeyDown (KeyCode.F7)) 
+		{
+			ReproducirVideo (5);
+			return;
+		}
+
+		// (F8) Video 6
+		if (Input.GetKeyDown (KeyCode.F8)) 
+		{
+			ReproducirVideo (6);
+			return;
+		}
+
+		// (F9) Video 7
+		if (Input.GetKeyDown (KeyCode.F9)) 
+		{
+			ReproducirVideo (7);
+			return;
+		}
+
+		// (F10) Video 8
+		if (Input.GetKeyDown (KeyCode.F10)) 
+		{
+			ReproducirVideo (8);
+			return;
+		}
+
+		// (F11) Video 9
+		if (Input.GetKeyDown (KeyCode.F11)) 
+		{
+			ReproducirVideo (9);
+			return;
+		}
 	}
 
 	private void MostrarModelo()
@@ -188,5 +265,11 @@ public class ControlTeclado : MonoBehaviour
 
 			yield return null;
 		}
+	}
+
+	public void ReproducirVideo(int numero)
+	{
+		//Cargar los videos
+		//reproducir video
 	}
 }

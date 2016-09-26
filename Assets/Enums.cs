@@ -6,6 +6,8 @@
 	public enum estado
 	{
 		enReloj,
-		enModelo
+		enModelo,
+		enConfiguracion,
+		enReproduccionVideo
 	}
 }

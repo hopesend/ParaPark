@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class ControlTiempo : MonoBehaviour 
 {
@@ -23,15 +24,15 @@ public class ControlTiempo : MonoBehaviour
 	{
 		if (!pausa) 
 		{
-			tiempo += Time.deltaTime;
+			tiempo -= Time.deltaTime;
 			MostrarTiempo ();
 		}
 	}
 
 	public void MostrarTiempo()
 	{
-		minutos.text = Mathf.Floor (tiempo / 60) >= 60 ? ((tiempo/60)-60).ToString("00") : Mathf.Floor (tiempo / 60).ToString ("00");
-		segundos.text = Mathf.Floor (tiempo % 60) >= 60 ? "00" : Mathf.Floor (tiempo % 60).ToString ("00");
-		horas.text = Mathf.Floor (tiempo / 3600) >= 60 ? ((tiempo/3600)-60).ToString("00") : Mathf.Floor (tiempo / 3600).ToString ("00");
+		horas.text = TimeSpan.FromSeconds(tiempo).Hours.ToString("00");
+		minutos.text = TimeSpan.FromSeconds(tiempo).Minutes.ToString("00");
+		segundos.text = TimeSpan.FromSeconds(tiempo).Seconds.ToString("00");
 	}
 }
