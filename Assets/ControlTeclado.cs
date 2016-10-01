@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.IO;
 using Parapark.Enumeraciones;
 
 public class ControlTeclado : MonoBehaviour 
@@ -11,7 +12,11 @@ public class ControlTeclado : MonoBehaviour
 	public GameObject modelo;
 	public GameObject camara;
 
-	private Renderer modeloRenderer;
+
+	private string[] pathVideos = new string[6];
+	private MovieTexture[] videos = new MovieTexture[6];
+	private string[] pathAudios = new string[6];
+	private AudioClip[] audios = new AudioClip[6];
 	private estado estadoAplicacion;
 	public estado EstadoAplicacion
 	{
@@ -47,6 +52,11 @@ public class ControlTeclado : MonoBehaviour
 		luz.intensity = 0f;
 		modelo.SetActive (false);
 		EstadoAplicacion = estado.enConfiguracion;
+		cXML nuevoXML = new cXML ();
+		pathVideos = nuevoXML.Cargar_Clase_Serializable<string[]>(Path.Combine(Environment.CurrentDirectory, "videos.xml"), pathVideos);
+		cargarVideos ();
+		pathAudios = nuevoXML.Cargar_Clase_Serializable<string[]>(Path.Combine(Environment.CurrentDirectory, "audios.xml"), pathAudios);
+		cargarAudios ();
 	}
 
 	void Update () 
@@ -94,12 +104,12 @@ public class ControlTeclado : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.Return)) 
 			Reloj.tiempo = 0;
 
-		// (F1) aumenta 60 minutos el tiempo
-		if (Input.GetKeyDown (KeyCode.F1)) 
+		// (Q) aumenta 60 minutos el tiempo
+		if (Input.GetKeyDown (KeyCode.Q)) 
 			Reloj.tiempo += 3600;
 
-		// (F2) aumenta 1 mintuo el tiempo
-		if (Input.GetKeyDown (KeyCode.F2)) 
+		// (W) aumenta 1 mintuo el tiempo
+		if (Input.GetKeyDown (KeyCode.W)) 
 			Reloj.tiempo += 60;
 
 		Reloj.MostrarTiempo ();
@@ -107,66 +117,87 @@ public class ControlTeclado : MonoBehaviour
 
 	private void TecladoEnModelo()
 	{
-		// (F3) Video 1
-		if (Input.GetKeyDown (KeyCode.F3)) 
+		// (F1) Video 1
+		if (Input.GetKeyDown (KeyCode.F1)) 
 		{
 			ReproducirVideo (1);
 			return;
 		}
 
-		// (F4) Video 2
-		if (Input.GetKeyDown (KeyCode.F4)) 
+		// (F2) Video 2
+		if (Input.GetKeyDown (KeyCode.F2)) 
 		{
 			ReproducirVideo (2);
 			return;
 		}
 
-		// (F5) Video 3
-		if (Input.GetKeyDown (KeyCode.F5)) 
+		// (F3) Video 3
+		if (Input.GetKeyDown (KeyCode.F3)) 
 		{
 			ReproducirVideo (3);
 			return;
 		}
 
-		// (F6) Video 4
-		if (Input.GetKeyDown (KeyCode.F6)) 
+		// (F4) Video 4
+		if (Input.GetKeyDown (KeyCode.F4)) 
 		{
 			ReproducirVideo (4);
 			return;
 		}
 
-		// (F7) Video 5
-		if (Input.GetKeyDown (KeyCode.F7)) 
+		// (F5) Video 5
+		if (Input.GetKeyDown (KeyCode.F5)) 
 		{
 			ReproducirVideo (5);
 			return;
 		}
 
-		// (F8) Video 6
-		if (Input.GetKeyDown (KeyCode.F8)) 
+		// (F6) Video 6
+		if (Input.GetKeyDown (KeyCode.F6)) 
 		{
 			ReproducirVideo (6);
 			return;
 		}
 
-		// (F9) Video 7
+		// (F7) Audio 1
+		if (Input.GetKeyDown (KeyCode.F7)) 
+		{
+			ReproducirAudio (1);
+			return;
+		}
+
+		// (F8) Audio 2
+		if (Input.GetKeyDown (KeyCode.F8)) 
+		{
+			ReproducirAudio (2);
+			return;
+		}
+
+		// (F9) Audio 3
 		if (Input.GetKeyDown (KeyCode.F9)) 
 		{
-			ReproducirVideo (7);
+			ReproducirAudio (3);
 			return;
 		}
 
-		// (F10) Video 8
+		// (F10) Audio 4
 		if (Input.GetKeyDown (KeyCode.F10)) 
 		{
-			ReproducirVideo (8);
+			ReproducirAudio (4);
 			return;
 		}
 
-		// (F11) Video 9
+		// (F11) Audio 5
 		if (Input.GetKeyDown (KeyCode.F11)) 
 		{
-			ReproducirVideo (9);
+			ReproducirAudio (5);
+			return;
+		}
+
+		// (F12) Audio 6
+		if (Input.GetKeyDown (KeyCode.F12)) 
+		{
+			ReproducirAudio (6);
 			return;
 		}
 	}
@@ -267,9 +298,53 @@ public class ControlTeclado : MonoBehaviour
 		}
 	}
 
+	/*public IEnumerator cargaVideos(string path)
+	{
+		WWW pelicula = new WWW(path);
+
+		//Wait for file finish loading
+		while(!pelicula.isDone)
+		{
+			yield return null;
+		}
+
+		//Save the loaded movie from WWW to movetexture
+		MovieTexture movieToPlay = pelicula.movie;
+
+		//Hook the movie texture to the current renderer
+		MeshRenderer ren = container.GetComponent<MeshRenderer>();
+		ren.material.mainTexture = movieToPlay ;    
+
+		movieToPlay.play();
+	}*/
+
+	public void cargarVideos()
+	{
+		for(int cont = 0; cont < 5; cont++)
+		{
+			if(pathVideos[cont] != null)
+				videos[cont] = new WWW("file:///" + pathVideos[cont]).movie;
+		}
+	}
+
+	public void cargarAudios()
+	{
+		for(int cont = 0; cont < 5; cont++)
+		{
+			if(pathAudios[cont] != null)
+				audios[cont] = new WWW("file:///" + pathAudios[cont]).audioClip;
+		}
+	}
+
 	public void ReproducirVideo(int numero)
 	{
 		//Cargar los videos
 		//reproducir video
+	}
+
+	public void ReproducirAudio(int numero)
+	{
+		//Cargar los audios
+		//reproducir audio
 	}
 }

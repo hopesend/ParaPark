@@ -65,6 +65,7 @@
      <Compile Include="Assets\Crazy Minnow Studio\SALSA with RandomEyes\Examples\Scripts\CSharp\CM_Waypoints.cs" />
      <Compile Include="Assets\Enums.cs" />
      <Compile Include="Assets\Objetos.cs" />
+     <Compile Include="Assets\cXML.cs" />
      <None Include="Assets\Crazy Minnow Studio\SALSA with RandomEyes\ReadMe.txt" />
      <None Include="Assets\Standard Assets\Fonts\OpenSans\License!.txt" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />

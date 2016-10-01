@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string>C:\Users\Hopesend\Downloads\Sp-Berner\programa_y_BD\programa_y_BD\tool_K199.mdb</string>
+  <string>C:\Users\Hopesend\Downloads\Sp-Berner\programa_y_BD\programa_y_BD\tool_Kitamuras.mdb</string>
+  <string xsi:nil="true" />
+  <string>C:\Users\Hopesend\Downloads\Sp-Berner\programa_y_BD\programa_y_BD\tool_VTC200.mdb</string>
+  <string xsi:nil="true" />
+  <string xsi:nil="true" />
+</ArrayOfString>
