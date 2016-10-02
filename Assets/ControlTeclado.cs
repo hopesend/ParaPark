@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.IO;
@@ -11,6 +12,7 @@ public class ControlTeclado : MonoBehaviour
 	public Light luz;
 	public GameObject modelo;
 	public GameObject camara;
+	public GameObject texturaVideo;
 
 
 	private string[] pathVideos = new string[6];
@@ -51,6 +53,7 @@ public class ControlTeclado : MonoBehaviour
 	{
 		luz.intensity = 0f;
 		modelo.SetActive (false);
+		texturaVideo.SetActive (false);
 		EstadoAplicacion = estado.enConfiguracion;
 		cXML nuevoXML = new cXML ();
 		pathVideos = nuevoXML.Cargar_Clase_Serializable<string[]>(Path.Combine(Environment.CurrentDirectory, "videos.xml"), pathVideos);
@@ -322,8 +325,15 @@ public class ControlTeclado : MonoBehaviour
 	{
 		for(int cont = 0; cont < 5; cont++)
 		{
-			if(pathVideos[cont] != null)
-				videos[cont] = new WWW("file:///" + pathVideos[cont]).movie;
+			if (pathVideos [cont] != null) 
+			{
+				WWW www = new WWW( "file:///" + pathVideos[cont]);
+				while ( !www.isDone )
+				{
+					Debug.Log ("Cargando Video " + pathVideos [cont]);
+				}
+				videos [cont] = www.movie;
+			}
 		}
 	}
 
@@ -331,15 +341,34 @@ public class ControlTeclado : MonoBehaviour
 	{
 		for(int cont = 0; cont < 5; cont++)
 		{
-			if(pathAudios[cont] != null)
-				audios[cont] = new WWW("file:///" + pathAudios[cont]).audioClip;
+			if (pathAudios [cont] != null) 
+			{
+				WWW aux1 = new WWW ("file:///" + pathAudios [cont]);
+				AudioClip aux = aux1.GetAudioClip (true);
+				while (!aux.loadState.Equals (AudioDataLoadState.Loaded)) 
+				{
+					Debug.Log ("Cargando Audio " + pathAudios [cont]);
+				}
+				audios [cont] = aux;
+			}
 		}
 	}
 
 	public void ReproducirVideo(int numero)
 	{
-		//Cargar los videos
-		//reproducir video
+		texturaVideo.GetComponent<RawImage> ().texture = (Texture)videos [numero];
+		MovieTexture aux = (MovieTexture)texturaVideo.GetComponent<RawImage> ().texture;
+		texturaVideo.SetActive (true);
+		aux.Play ();
+		while (aux.isPlaying)
+			Debug.Log ("Repoduciendo : " + pathVideos [numero]);
+		texturaVideo.SetActive (false);
+
+
+		//texturaVideo.GetComponent<Renderer> ().material.mainTexture
+		//MovieTexture nuevoVideo = new MovieTexture ();
+		//Renderer r = GetComponent<Renderer>();
+		//MovieTexture movie = (MovieTexture)r.material.mainTexture;
 	}
 
 	public void ReproducirAudio(int numero)
